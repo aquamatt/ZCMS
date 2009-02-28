@@ -5,9 +5,9 @@ def init_languages():
     if languages:
         return
     
-    languages = [ ('UK English', 'en/gb'),
-                  ('US English', 'en/us'),
-                  ('French', 'fr/fr')]
+    languages = [ ('UK English', 'en_gb'),
+                  ('US English', 'en_us'),
+                  ('French', 'fr_fr')]
 
     for name, code in languages:
         l = Language(name = name, iso_code = code)
@@ -18,7 +18,7 @@ def init_channels():
     if channels:
         return
     
-    channels = [ 'UK', 'US', 'FRANCE', 'UK-SIMPLE' ]
+    channels = [ 'UK', 'US', 'FRANCE', 'UK-FOO' ]
     for chan in channels:
         c = Channel(name = chan)
         c.save()
