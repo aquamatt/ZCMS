@@ -4,8 +4,10 @@ from django.template import Template, RequestContext
 
 from zcms.models import CMSComponent
 from zcms.cmstags import renderComponent
-
-def showTestPage(request):
+from zcms import CMSContext
+def showTestPage(request, lang='en_gb', channel='UK'):
     rq = RequestContext(request)
-    v = Template(renderComponent(component_cid = 'home')).render(rq)
+    cmsContext = CMSContext(language_iso=lang, channel=channel)
+    component = renderComponent(cmsContext, component_cid = 'home')
+    v = Template(component).render(rq)
     return HttpResponse(v)

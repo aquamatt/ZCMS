@@ -1,5 +1,7 @@
 from zcms.models import CMSComponent
 from zcms.models import CMSToken
+from zcms import CMSError
+from zcms import CMSContext
 import re
 
 PROCESSORS = {}
@@ -9,11 +11,35 @@ PROCESSORS = {}
 # need to split out args subsequently
 commandMatcher = re.compile('(\[% *(\w+) +([\w ]*) *%\])')
 
-def renderComponent(component_cid = None, component_id = None):
+def _getElementWithContext(cls, context, **kwargs):
+    """ Return a component or token (anything that has channel/language varients,
+first looking in the context specified, then looking to parent contexts if the element
+cannot be found. Gives component inheritence."""
+    while True:
+        try:
+            element = cls.objects.get(channel = context.channel,
+                                        language = context.language,
+                                        **kwargs)
+            break
+        except Exception, ex:
+            p = context.parentByChannel()
+            if not p:
+                raise CMSError("Component not available for specified context. ")
+            else:
+                context = p
+    return element
+    
+
+def renderComponent(context = None, component_cid = None, component_id = None):
+    """ Render component specified by either CID or ID for the given context. """
+    if (not context) or (not isinstance(context, CMSContext)):
+        raise CMSError("Context not supplied")
+
     if component_id:
-        component = CMSComponent.objects.get(pk = component_id)
+        component = _getElementWithContext(CMSComponent, context, pk=component_id)
     elif component_cid:
-        component = CMSComponent.objects.get(cid = component_cid)
+        component = _getElementWithContext(CMSComponent, context, cid = component_cid)
+            
     else:
         raise Exception("You must specify a name or id for the component")
     
@@ -25,11 +51,10 @@ def renderComponent(component_cid = None, component_id = None):
         if replacementValues.has_key(cmstag):
             continue
         tag, cmd, args = cmstag
-        rv = getHandler(cmd)(args)
+        rv = getHandler(cmd)(context, args)
         replacementValues[cmstag] = (tag, rv)
         
     for tag, rv in replacementValues.values():
-        print("Replacint %s with %s" % (tag, rv))
         value = value.replace(tag, rv)
     
     return value    
@@ -45,25 +70,27 @@ def getHandler(tag_name):
     
 #### PREBUILT HANDLERS ######    
     
-def handle_componentByName(args):
+def handle_componentByName(context, args):
     """ Return processed component as referenced by name (cid)"""
     cid = args.strip().split(' ')[0].strip()
-    return renderComponent(component_cid = cid)
+    return renderComponent(context, component_cid = cid)
     
-def handle_componentById(args):
+def handle_componentById(context, args):
     """ Return processed component as referenced by ID (primary key)"""
     id = args.strip().split(' ')[0].strip()
-    return renderComponent(component_id = int(id))
+    return renderComponent(context, component_id = int(id))
 
-def handle_tokenByName(args):
+def handle_tokenByName(context, args):
     """ Return named token """
     cid = args.strip().split(' ')[0].strip()
-    return CMSToken.objects.get(cid = cid).value
+    token = _getElementWithContext(CMSToken, context, cid = cid)
+    return token.value
 
-def handle_tokenById(args):
+def handle_tokenById(context, args):
     """ Return token referenced by ID (primary key) """
     id = args.strip().split(' ')[0].strip()
-    return CMSToken.objects.get(pk = id).value
+    token = _getElementWithContext(CMSToken, context, pk = id)
+    return token.value
 
 register('componentByName', handle_componentByName)
 register('componentById', handle_componentById)

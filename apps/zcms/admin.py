@@ -18,7 +18,7 @@ class URLAdmin(admin.ModelAdmin):
 admin.site.register(URL, URLAdmin)
 
 class ChannelAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('id', 'name', 'parent')
 admin.site.register(Channel, ChannelAdmin)
 
 class LanguageAdmin(admin.ModelAdmin):

@@ -18,9 +18,12 @@ def init_channels():
     if channels:
         return
     
-    channels = [ 'UK', 'US', 'FRANCE', 'UK-FOO' ]
-    for chan in channels:
+    channels = [ ('UK', None), ('US', 'UK'), ('FRANCE', 'UK'), ('UK-FOO', 'UK') ]
+    for chan, parent in channels:
         c = Channel(name = chan)
+        if parent:
+            parent = Channel.objects.get(name=parent)
+            c.parent = parent
         c.save()
 
 def init_data(**kwargs):

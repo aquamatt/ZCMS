@@ -3,6 +3,8 @@ from django.db import models
 class Channel(models.Model):
     """ A channel may represent a country, a category of visitor... anything."""
     name = models.CharField(max_length = 20, unique = True)
+    parent = models.ForeignKey("Channel", related_name='child', blank=True, null=True)
+    
     def __unicode__(self):
         return self.name
     
