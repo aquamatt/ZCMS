@@ -9,5 +9,6 @@ def showTestPage(request, lang='en_gb', channel='UK'):
     rq = RequestContext(request)
     cmsContext = CMSContext(language_iso=lang, channel=channel)
     component = renderComponent(cmsContext, component_cid = 'home')
+    rq['testvar'] = 'MY VAR'
     v = Template(component).render(rq)
     return HttpResponse(v)
