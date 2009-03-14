@@ -28,8 +28,7 @@ cannot be found. Gives component inheritence."""
             else:
                 context = p
     return element
-    
-
+        
 def renderComponent(context = None, component_cid = None, component_id = None):
     """ Render component specified by either CID or ID for the given context. """
     if (not context) or (not isinstance(context, CMSContext)):
@@ -58,7 +57,6 @@ def renderComponent(context = None, component_cid = None, component_id = None):
         value = value.replace(tag, rv)
     
     return value    
-    
 
 def register(tag_name, processor):
     """ Register a CMS tag processor method """

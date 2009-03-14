@@ -1,14 +1,9 @@
-from django.http import HttpResponse
-from django.shortcuts import render_to_response
-from django.template import Template, RequestContext
-
-from zcms.models import CMSComponent
-from zcms.cmstags import renderComponent
+from django.template import RequestContext
 from zcms import CMSContext
+from zcms.page import render_to_response
+
 def showTestPage(request, lang='en_gb', channel='UK'):
-    rq = RequestContext(request)
     cmsContext = CMSContext(language_iso=lang, channel=channel)
-    component = renderComponent(cmsContext, component_cid = 'home')
-    rq['testvar'] = 'MY VAR'
-    v = Template(component).render(rq)
-    return HttpResponse(v)
+    return render_to_response('home', cmsContext,
+                             {'testvar':'MY VAR'}, 
+                             context_instance = RequestContext(request))
