@@ -5,7 +5,7 @@ from zcms.models import CMSComponent
 from zcms.cmstags import renderComponent
 from zcms import CMSContext
 
-def render_to_response(component, 
+def render_to_response(component, cmscontext, 
                        context = {}, context_instance = {}):
     """ Similar to django render_to_response, this take a context, an 
 optional request context, a cms context and a component name. It then 
