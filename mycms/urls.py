@@ -16,4 +16,5 @@ urlpatterns = patterns('',
     (r'^admin/(.*)', admin.site.root),
     (r'^test$', views.showTestPage),
     (r'^test/(.*)/(.*)/$', views.showTestPage),
+    (r'^zcms/', include("zcms.urls"))
 )

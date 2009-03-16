@@ -75,6 +75,7 @@ TEMPLATE_DIRS = ( "templates/",
 TEMPLATE_CONTEXT_PROCESSORS = ( 
    "django.core.context_processors.auth",
    "django.core.context_processors.media",   
+   "zcms.context_processors.set_cmscontext",
    )
 
 INSTALLED_APPS = (

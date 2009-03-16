@@ -65,7 +65,7 @@ class URL(models.Model):
     name = models.CharField(max_length = 20)
     url = models.CharField(max_length = 255, unique = True)
     enabled = models.BooleanField(default = True)
-    component = models.ForeignKey(CMSComponent)
+    component_name = models.CharField(max_length = 20)
 
     def __unicode__(self):
         return self.url

@@ -14,7 +14,9 @@ class CMSTokenAdmin(admin.ModelAdmin):
 admin.site.register(CMSToken, CMSTokenAdmin)
 
 class URLAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('id', 'name', 'url', 'component_name', 'enabled')
+    search_fields = ('name', 'url')
+    list_filter = ('enabled', )
 admin.site.register(URL, URLAdmin)
 
 class ChannelAdmin(admin.ModelAdmin):

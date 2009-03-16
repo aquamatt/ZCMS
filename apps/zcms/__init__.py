@@ -1,6 +1,7 @@
 """ Some basic zCMS objects """
 from zcms.models import Channel
 from zcms.models import Language
+import threading
 
 class CMSError(Exception): pass
 
@@ -39,4 +40,9 @@ language and channel must be specified. """
         return "%s/%s" % (self.channel.name, self.language.iso_code)
             
     
-
+def setCMSContext(request, context = None):
+    """ Set the context found in the session into the thread """
+    if context:
+        request.session['ZCMS_CONTEXT'] = context
+    ct = threading.currentThread()
+    ct._zcms_context = request.session['ZCMS_CONTEXT']
