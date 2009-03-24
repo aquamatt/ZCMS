@@ -1,0 +1,5 @@
+1) Settings
+	a) Add to TEMPLATE_CONTEXT_PROCESSORS:   "zcms.context_processors.set_cmscontext"
+	b) Add to zcms to INSTALLED_APPS
+2) syncdb
+3)

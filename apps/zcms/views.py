@@ -14,6 +14,8 @@ from zcms.models import URL, CMSComponent
 from zcms.cmstags import renderComponentDirect
 from zcms.cmstags import getElementWithContext 
 
+from django.template import Template, RequestContext
+
 def setContext(request):
     """Set the channel/language CMS context into the session. This a means by which
 the channel/language can be set. Use the GET arguments as follows::
@@ -51,5 +53,5 @@ field in the URLs table."""
         print ex
         response = ""
 
-    return HttpResponse(response)
+    return HttpResponse( Template(response).render(RequestContext(request)) )
     
