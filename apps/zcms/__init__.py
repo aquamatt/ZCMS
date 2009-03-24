@@ -1,4 +1,6 @@
-""" Some basic zCMS objects """
+""" Some basic zCMS objects and add the zcmstags to the Django builtins
+so that (a) zextends works as anticipated and (b) you don't always have 
+the inconvienience of loading the library in every page."""
 from zcms.models import Channel
 from zcms.models import Language
 import threading
@@ -46,3 +48,7 @@ def setCMSContext(request, context = None):
         request.session['ZCMS_CONTEXT'] = context
     ct = threading.currentThread()
     ct._zcms_context = request.session['ZCMS_CONTEXT']
+
+# cause tags to get registered so are present by default
+from django.template import add_to_builtins
+add_to_builtins("zcms.templatetags.zcmstags")

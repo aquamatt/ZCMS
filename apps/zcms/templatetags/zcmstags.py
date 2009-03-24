@@ -7,11 +7,9 @@ from django.template.loader_tags import ExtendsNode
 from zcms.cmstags import renderComponent
 register = Library()
 
-class ZExtendsNode(Node):
+class ZExtendsNode(ExtendsNode):
     def __init__(self, nodelist, contextNameExpr, templateName = None, templateVar = None):
-        Node.__init__(self)
-        self.nodelist = nodelist
-        self.contextNameExpr = contextNameExpr
+        ExtendsNode.__init__(self, nodelist, None, contextNameExpr)
         self.templateName = templateName
         self.templateVar = templateVar
 
@@ -22,8 +20,7 @@ class ZExtendsNode(Node):
             name = self.templateName
         component = renderComponent(name)
         context['zcms_internal_component_'] = Template(component)
-        en = ExtendsNode(self.nodelist, None, self.contextNameExpr)
-        return en.render(context)
+        return ExtendsNode.render(self, context)
 
 def do_zextends(parser, token):
     """ Use only {% zextends template-name %}. Retrieves and processes template 
