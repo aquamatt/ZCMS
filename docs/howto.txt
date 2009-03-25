@@ -1,5 +1,38 @@
+ZCMS is a very, very basic CMS. It is not:
+
+* enhanced with cacheing
+* quite right in the way channels/languages extend each other
+* very featureful
+* in anyway intended to be 'good'
+
+It is:
+* a toy with which to learn
+* handy for very small sites, if you like that sort of thing
+* an experimental play thing
+
+It was written to scratch an itch about CMS for multi-channel, multi-lingual content.
+In this bundle you have:
+
+(a) The zcms application under apps. This is all you need to add ZCMS to your Django
+    applications
+(b) The mycms demo site which implements the zcms 
+
+To use ZCMS, make sure the app is on the python path and do the following:
+
 1) Settings
 	a) Add to TEMPLATE_CONTEXT_PROCESSORS:   "zcms.context_processors.set_cmscontext"
 	b) Add to zcms to INSTALLED_APPS
+	c) Add something like the following to your URLS:
+	   (r'^zcms/', include("zcms.urls")),
+	   
 2) syncdb
-3)
+
+You can now play around. How exactly? Well, consider the mycms application first to see how it 
+works. Once the apps folder is in the python path and you've made the MySQL database (see 
+settings.py for credentials - adjust to suit) do a syncdb. Then source the datase in test_db
+(created with mysqldump) to bring in a very poor test site. You can see the content
+in admin and see the site in action on the root URL.
+
+Don't forget: it's a bit pants at the moment!
+
+Matthew
