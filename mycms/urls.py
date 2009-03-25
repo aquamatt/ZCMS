@@ -14,7 +14,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/(.*)', admin.site.root),
-    (r'^test$', views.showTestPage),
-    (r'^test/(.*)/(.*)/$', views.showTestPage),
-    (r'^zcms/', include("zcms.urls"))
+
+    (r'^zcms/', include("zcms.urls")),
+    (r'^$', views.showTestPage),
 )

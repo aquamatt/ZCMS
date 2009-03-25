@@ -75,7 +75,9 @@ TEMPLATE_DIRS = ( "templates/",
 TEMPLATE_CONTEXT_PROCESSORS = ( 
    "django.core.context_processors.auth",
    "django.core.context_processors.media",   
-   "zcms.context_processors.set_cmscontext",
+   ## ZCMS: the following ensures that the CMSContext is added to the 
+   ## request thread such that it can be retrieved throughout the system
+   "zcms.context_processors.set_cmscontext", 
    )
 
 INSTALLED_APPS = (
@@ -84,5 +86,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
+    ## ZCMS: Makes the ZCMS app available. Automaticaly the ZCMS Django template
+    ## tags will be added to the builtin tag library.
     'zcms',
 )
