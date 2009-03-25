@@ -1,7 +1,9 @@
 """ Helper tags for using Django templates within the zCMS. Solves problems
 such as extending templates. The Django 'extends' tag doesn't understand the CMS
 so we provide zextends. """
-
+# this import of the loader is to resolve circular dependency breakage 
+# when run with mod_python
+import django.template.loader
 from django.template import Template, Node, Library
 from django.template.loader_tags import ExtendsNode
 from zcms.cmstags import renderComponent
