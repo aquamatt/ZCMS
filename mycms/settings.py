@@ -62,6 +62,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    ## ZCMS: the following ensures that the CMSContext is added to the 
+    ## request thread such that it can be retrieved throughout the system
     'zcms.middleware.ZCMSMiddleware',
 )
 
@@ -76,9 +78,6 @@ TEMPLATE_DIRS = ( "templates/",
 TEMPLATE_CONTEXT_PROCESSORS = ( 
    "django.core.context_processors.auth",
    "django.core.context_processors.media",   
-   ## ZCMS: the following ensures that the CMSContext is added to the 
-   ## request thread such that it can be retrieved throughout the system
-   ##"zcms.context_processors.set_cmscontext", 
    )
 
 INSTALLED_APPS = (
