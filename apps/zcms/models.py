@@ -29,7 +29,6 @@ or big text whereas a Token is a small 'thing' - a small piece of text for examp
 more than 200 characters long."""
     cid = models.CharField(max_length = 20)
     channel = models.ForeignKey(Channel)
-    language = models.ForeignKey(Language)
     value = models.TextField()
     
     def __unicode__(self):
@@ -51,9 +50,8 @@ class CMSToken(models.Model):
 whereas a Token is a small 'thing' - a small piece of text for example, no 
 more than 200 characters long. """
     cid = models.CharField(max_length = 20)
-    channel = models.ForeignKey(Channel)
     language = models.ForeignKey(Language)
-    value = models.CharField(max_length = 200)
+    value = models.TextField()
     
     def __unicode__(self):
         return self.value

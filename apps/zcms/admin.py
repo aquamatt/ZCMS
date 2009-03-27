@@ -2,14 +2,14 @@ from django.contrib import admin
 from zcms.models import *
 
 class CMSComponentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'cid', 'channel', 'language', 'shortValue')
-    list_filter = ('channel', 'language')
+    list_display = ('id', 'cid', 'channel', 'shortValue')
+    list_filter = ('channel', )
     search_fields = ('cid', 'value')
 admin.site.register(CMSComponent, CMSComponentAdmin)
 
 class CMSTokenAdmin(admin.ModelAdmin):
-    list_display = ('id', 'cid', 'channel', 'language', 'value')
-    list_filter = ('channel', 'language')
+    list_display = ('id', 'cid', 'language', 'value')
+    list_filter = ('language', )
     search_fields = ('cid', 'value')
 admin.site.register(CMSToken, CMSTokenAdmin)
 

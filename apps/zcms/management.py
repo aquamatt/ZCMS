@@ -5,12 +5,16 @@ def init_languages():
     if languages:
         return
     
-    languages = [ ('UK English', 'en_gb'),
-                  ('US English', 'en_us'),
-                  ('French', 'fr_fr')]
+    languages = [ ('UK English', 'en_gb', None),
+                  ('US English', 'en_us', 'en_gb'),
+                  ('French', 'fr_fr', 'en_gb')]
 
-    for name, code in languages:
-        l = Language(name = name, iso_code = code)
+    for name, code, fallback in languages:
+        if fallback:
+            fb = Language.objects.get(iso_code = fallback)
+            l = Language(name = name, iso_code = code, fallback = fb)
+        else:
+            l = Language(name = name, iso_code = code)
         l.save()
         
 def init_channels():

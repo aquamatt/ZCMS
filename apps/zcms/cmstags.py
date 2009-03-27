@@ -13,19 +13,31 @@ PROCESSORS = {}
 commandMatcher = re.compile('(\[% *(\w+) +([\w ]*) *%\])')
 
 def getElementWithContext(cls, **kwargs):
-    """ Return a component or token (anything that has channel/language varients,
+    """ Return a component or token,
 first looking in the context specified, then looking to parent contexts if the element
-cannot be found. Gives component inheritence."""
-    context = threading.currentThread()._zcms_context
+cannot be found. Gives component inheritence.
+
+If the cls is a CMSComponent, the parent will be sought by looking up the channel tree;
+if a CMSToken it will look for fallback languages. This enforces the concept that
+components are structural whilst Tokens are purely linguistic."""
+    if cls == CMSComponent:
+        parentField = 'channel'
+        parentMethod = 'parentByChannel'
+    elif cls == CMSToken:
+        parentField = 'language'
+        parentMethod = 'parentByLanguage'
+    else:
+        raise Exception("Can only operate on CMSToken or CMSComponent")
         
+    context = threading.currentThread()._zcms_context
+
     while True:
         try:
-            element = cls.objects.get(channel = context.channel,
-                                        language = context.language,
-                                        **kwargs)
+            kwargs[parentField] = getattr(context, parentField)
+            element = cls.objects.get(**kwargs)
             break
         except Exception, ex:
-            p = context.parentByChannel()
+            p = getattr(context, parentMethod)()
             if not p:
                 raise CMSError("Component not available for specified context. ")
             else:

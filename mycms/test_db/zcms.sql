@@ -38,7 +38,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `zcms_channel` WRITE;
 /*!40000 ALTER TABLE `zcms_channel` DISABLE KEYS */;
-INSERT INTO `zcms_channel` VALUES (1,'UK',NULL),(3,'FRANCE',1);
+INSERT INTO `zcms_channel` VALUES (1,'MAIN',NULL),(2,'ALTERNATE',1);
 /*!40000 ALTER TABLE `zcms_channel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -53,12 +53,10 @@ CREATE TABLE `zcms_cmscomponent` (
   `id` int(11) NOT NULL auto_increment,
   `cid` varchar(20) NOT NULL,
   `channel_id` int(11) NOT NULL,
-  `language_id` int(11) NOT NULL,
   `value` longtext NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `zcms_cmscomponent_channel_id` (`channel_id`),
-  KEY `zcms_cmscomponent_language_id` (`language_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+  KEY `zcms_cmscomponent_channel_id` (`channel_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -67,7 +65,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `zcms_cmscomponent` WRITE;
 /*!40000 ALTER TABLE `zcms_cmscomponent` DISABLE KEYS */;
-INSERT INTO `zcms_cmscomponent` VALUES (1,'home',1,1,'{% zextends \"basecomponent\" %}\r\n\r\n{% block content %}\r\n<p>This is the \'home\' template; it extends basecomponent with the zextends tag, a version of Django\'s extends tag which is able to pull templates from the CMS.</p>\r\n<p>\r\nA token from the CMS: [% tokenByName todo %]\r\n</p>\r\n{% endblock %}\r\n'),(2,'loud_bit',1,1,'<span style=\'font-weight:bold\'>[% tokenByName baz %]</span>\r\n[% componentByName quiet_bit %]'),(3,'quiet_bit',1,1,'<span style=\'color:red\'>shhhh...</span>'),(6,'uberparent',1,1,'<html>\r\n<body>\r\n<span style=\'background-color:#ccccff\'>\r\n<a href=\'/zcms/setcontext?language=en_gb&channel=UK\'>UK Channel</a> | <a href=\'/zcms/setcontext?channel=FRANCE\'>French Channel</a>\r\n</span>\r\n<hr/>\r\nUber parent : This is the high level parent</br>\r\n{% block master %}\r\n{% endblock %}\r\n<hr/>\r\nClick <a href=\'/zcms/help\'>here</a> for the help page\r\n</body>\r\n</html>'),(5,'basecomponent',1,1,'{% zextends \"uberparent\" %}\r\n{% block master %}\r\n   <p>This is the base component, it extends the uberparent.</p>\r\n   <p>The best place to be \"[% tokenByName foobar %]\". The data in quotes is a CMS Token</p>\r\n  <p>\r\n  [% componentByName loud_bit %] (This is CMS component)\r\n  </p>\r\n\r\n{% block content %}{% endblock content%}\r\n\r\n{% endblock master%}'),(7,'home',3,1,'{% zextends \"basecomponent\" %}\r\n\r\n{% block content %}\r\n<p>Voici le cadre \'maison\' qui tien de le cadre \'basecomponent\'. Pas mal, n\'est-ce pas?\r\n</p>\r\nUn \'token\' du CMS: [% tokenByName todo %]\r\n</p>\r\n{% endblock %}'),(8,'help',1,1,'{% zextends \"uberparent\" %}\r\n{% block master %}\r\n<p>\r\n  A little bit of static content. This could be the help page!\r\n</p>\r\n{% block content %}{% endblock content%}\r\n\r\n{% endblock master%}'),(9,'help',3,1,'{% zextends \"uberparent\" %}\r\n{% block master %}\r\n<p>\r\n Voici une page statique qui pourrait, par example, donner des explications.\r\n</p>\r\n{% block content %}{% endblock content%}\r\n\r\n{% endblock master%}');
+INSERT INTO `zcms_cmscomponent` VALUES (1,'home',1,'{% zextends \"basecomponent\" %}\r\n\r\n{% block content %}\r\n<p>This is the \'home\' template; it extends basecomponent with the zextends tag, a version of Django\'s extends tag which is able to pull templates from the CMS.</p>\r\n<p>\r\nA token from the CMS: [% tokenByName todo %]\r\n</p>\r\n{% endblock %}\r\n'),(2,'loud_bit',1,'<span style=\'font-weight:bold\'>[% tokenByName baz %]</span>\r\n[% componentByName quiet_bit %]'),(3,'quiet_bit',1,'<span style=\'color:red\'>shhhh...</span>'),(6,'uberparent',1,'<html>\r\n<body>\r\n<span style=\'background-color:#ccccff\'>\r\n<a href=\'/zcms/setcontext?channel=MAIN\'>MAIN Channel</a> | \r\n<a href=\'/zcms/setcontext?channel=ALTERNATE\'>Alternate Channel</a>  |\r\n<a href=\'/zcms/setcontext?language=en_gb\'>English</a> | \r\n<a href=\'/zcms/setcontext?language=fr_fr\'>French</a>\r\n</span>\r\n<hr/>\r\nUber parent : This is the high level parent</br>\r\n{% block master %}\r\n{% endblock %}\r\n<hr/>\r\nClick <a href=\'/zcms/help\'>here</a> for the help page\r\n</body>\r\n</html>'),(5,'basecomponent',1,'{% zextends \"uberparent\" %}\r\n{% block master %}\r\n   <p>This is the base component, it extends the uberparent.</p>\r\n   <p>The best place to be \"[% tokenByName foobar %]\". The data in quotes is a CMS Token</p>\r\n  <p>\r\n  [% componentByName loud_bit %] (This is CMS component)\r\n  </p>\r\n\r\n{% block content %}{% endblock content%}\r\n\r\n{% endblock master%}'),(10,'uberparent',2,'<html>\r\n<body style=\'background-color:#ccc\'>\r\n<span style=\'background-color:#ccccff\'>\r\n<a href=\'/zcms/setcontext?channel=MAIN\'>MAIN Channel</a> | \r\n<a href=\'/zcms/setcontext?channel=ALTERNATE\'>Alternate Channel</a>  |\r\n<a href=\'/zcms/setcontext?language=en_gb\'>English</a> | \r\n<a href=\'/zcms/setcontext?language=fr_fr\'>French</a>\r\n</span>\r\n<hr/>\r\nUber parent : This is the high level parent</br>\r\n{% block master %}\r\n{% endblock %}\r\n<hr/>\r\nClick <a href=\'/zcms/help\'>here</a> for the help page\r\n</body>\r\n</html>'),(8,'help',1,'{% zextends \"uberparent\" %}\r\n{% block master %}\r\n<p>\r\n  [% tokenByName helpText %]\r\n</p>\r\n{% block content %}{% endblock content%}\r\n\r\n{% endblock master%}');
 /*!40000 ALTER TABLE `zcms_cmscomponent` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,13 +79,11 @@ SET character_set_client = utf8;
 CREATE TABLE `zcms_cmstoken` (
   `id` int(11) NOT NULL auto_increment,
   `cid` varchar(20) NOT NULL,
-  `channel_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
-  `value` varchar(200) NOT NULL,
+  `value` longtext NOT NULL,
   PRIMARY KEY  (`id`),
-  KEY `zcms_cmstoken_channel_id` (`channel_id`),
   KEY `zcms_cmstoken_language_id` (`language_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -96,7 +92,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `zcms_cmstoken` WRITE;
 /*!40000 ALTER TABLE `zcms_cmstoken` DISABLE KEYS */;
-INSERT INTO `zcms_cmstoken` VALUES (1,'foobar',1,1,'Is really home.'),(2,'baz',1,1,'Whoopsy!'),(4,'todo',1,1,'Blah blah blah'),(5,'todo',3,1,'Meh, meh meh!');
+INSERT INTO `zcms_cmstoken` VALUES (1,'foobar',1,'Is really home.'),(2,'baz',1,'Whoopsy!'),(4,'todo',1,'Blah blah blah'),(5,'todo',3,'Meh, meh meh!'),(6,'helpText',1,'A little bit of static content. This could be the help page!'),(7,'helpText',3,'Un peu de contenue statique  - on purrait y mettre une page d\'aide.');
 /*!40000 ALTER TABLE `zcms_cmstoken` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -111,7 +107,11 @@ CREATE TABLE `zcms_language` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(20) NOT NULL,
   `iso_code` varchar(5) NOT NULL,
-  PRIMARY KEY  (`id`)
+  `fallback_id` int(11) default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `iso_code` (`iso_code`),
+  KEY `zcms_language_fallback_id` (`fallback_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 SET character_set_client = @saved_cs_client;
 
@@ -121,7 +121,7 @@ SET character_set_client = @saved_cs_client;
 
 LOCK TABLES `zcms_language` WRITE;
 /*!40000 ALTER TABLE `zcms_language` DISABLE KEYS */;
-INSERT INTO `zcms_language` VALUES (1,'UK English','en_gb'),(2,'US English','en_us'),(3,'French','fr_fr');
+INSERT INTO `zcms_language` VALUES (1,'UK English','en_gb',NULL),(2,'US English','en_us',1),(3,'French','fr_fr',1);
 /*!40000 ALTER TABLE `zcms_language` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,4 +162,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2009-03-25 21:53:35
+-- Dump completed on 2009-03-27 23:35:52

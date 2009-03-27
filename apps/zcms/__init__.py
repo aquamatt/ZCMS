@@ -31,11 +31,19 @@ language and channel must be specified. """
         self.language = _language
         
     def parentByChannel(self):
-        """ Return context for parent channel if indeed this does extend another. """
+        """ Return new context with channel set to parent, if available """
         if not self.channel.parent:
             return None
         c = CMSContext(language_id = self.language.id, 
                        channel_id = self.channel.parent.id)
+        return c
+    
+    def parentByLanguage(self):
+        """ Return new context with language set to fallback language, if possible """
+        if not self.language.fallback:
+            return None
+        c = CMSContext(language_id = self.language.fallback.id, 
+                       channel_id = self.channel.id)
         return c
         
     def __str__(self):
