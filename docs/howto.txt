@@ -1,7 +1,6 @@
 ZCMS is a very, very basic CMS. It is not:
 
 * enhanced with cacheing
-* quite right in the way channels/languages extend each other
 * very featureful
 * in anyway intended to be 'good'
 
