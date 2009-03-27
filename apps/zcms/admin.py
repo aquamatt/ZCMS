@@ -24,6 +24,6 @@ class ChannelAdmin(admin.ModelAdmin):
 admin.site.register(Channel, ChannelAdmin)
 
 class LanguageAdmin(admin.ModelAdmin):
-    list_display = ('id', 'iso_code', 'name')
+    list_display = ('id', 'iso_code', 'name', 'fallback')
 
 admin.site.register(Language, LanguageAdmin)

@@ -15,6 +15,7 @@ class Language(models.Model):
     """ Language is much as you'd expect """
     name = models.CharField(max_length = 20, unique = True)
     iso_code = models.CharField(max_length = 5, unique = True)
+    fallback = models.ForeignKey("Language", related_name='child', blank=True, null=True)
     
     def __unicode__(self):
         return self.iso_code

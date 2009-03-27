@@ -20,7 +20,7 @@ In this bundle you have:
 To use ZCMS, make sure the app is on the python path and do the following:
 
 1) Settings
-	a) Add to TEMPLATE_CONTEXT_PROCESSORS:   "zcms.context_processors.set_cmscontext"
+	a) Add to MIDDLEWARE_CLASSES:   "zcms.middleware.ZCMSMiddleware"
 	b) Add to zcms to INSTALLED_APPS
 	c) Add something like the following to your URLS:
 	   (r'^zcms/', include("zcms.urls")),
