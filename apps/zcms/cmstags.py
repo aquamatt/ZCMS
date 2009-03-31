@@ -155,6 +155,7 @@ Evaluation is done with the following globals dict:
     - datecmp (date comparison - args: year, month, day, datetime instance)
     - timecmp (time comparison - args: hour, minute, second, datetime instance)
     
+See models.Slot for details.
 """
     name = args.strip().split(' ')[0].strip()
     
