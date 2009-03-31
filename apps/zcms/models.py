@@ -27,7 +27,7 @@ class CMSComponent(models.Model):
     """ Represents a component in the CMS. A component is a large 'thing', e.g. a template
 or big text whereas a Token is a small 'thing' - a small piece of text for example, no
 more than 200 characters long."""
-    cid = models.CharField(max_length = 20)
+    cid = models.CharField(max_length = 100)
     channel = models.ForeignKey(Channel)
     value = models.TextField()
     
@@ -49,7 +49,7 @@ class CMSToken(models.Model):
     """ Represents a token in the CMS. A component is a large 'thing', e.g. a template
 whereas a Token is a small 'thing' - a small piece of text for example, no 
 more than 200 characters long. """
-    cid = models.CharField(max_length = 20)
+    cid = models.CharField(max_length = 100)
     language = models.ForeignKey(Language)
     value = models.TextField()
     
@@ -72,4 +72,26 @@ class URL(models.Model):
     def __str__(self):
         return self.__unicode__()
     
+class Slot(models.Model):
+    """ Slots are regions in a page that have content that is chosen according to rules. SlotContent entries
+define the CMSComponent to be inserted in a given slot according to specified rules. At first it was imagined
+that this would be straight-forward time-based rules. But why restrict ourselves? This is Python. This is dynamic. And
+whilst it might be considered a bit low level or ugly, why not have some code-like content to build sophisticated rules?
+This code is in the database. 
+
+Each line in the text field is a single expression. Each expression must evaluate to True for
+the rule to trigger. The first slot rule to trigger wins. Slot entries for a given slot can be ordered by the Rank column.
+
+An slot with an empty rules entry is ignored always. This is equivalent to setting enabled=False.
+This can ensure a set of slot rules always terminates in a result.
+
+Any rule preceeded by # is considered a comment
+"""
+    slot = models.CharField(max_length = 20)
+    rank = models.IntegerField(default = 1)
+    enabled = models.BooleanField(default = True)
+    rules = models.TextField()
+    summary = models.CharField(max_length = 150)
+    component = models.CharField(max_length = 100)
+    is_token = models.BooleanField()
     

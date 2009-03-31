@@ -1,9 +1,11 @@
 from zcms.models import CMSComponent
 from zcms.models import CMSToken
+from zcms.models import Slot
 from zcms import CMSError
 from zcms import CMSContext
 import threading
 import re
+from cStringIO import StringIO
 
 PROCESSORS = {}
 
@@ -106,7 +108,95 @@ def handle_tokenById(args):
     token = getElementWithContext(CMSToken, pk = id)
     return token.value
 
+from datetime import datetime
+def _datecmp(year, month, day, date):
+    """ Return comparison with datetime instance supplied in date. 
+-1 if less than, 0 if equal, +1 if greater than. Time component is ignored.
+
+Used by handle_slot
+"""
+    rv = cmp(year, date.year)
+    if not rv:
+        rv = cmp(month, date.month)
+    if not rv:
+        rv = cmp(day, date.day)
+    return rv
+
+def _timecmp(h, m, s, time):
+    """ Return comparison with datetime instance supplied in time. 
+-1 if less than, 0 if equal, +1 if greater than. Date component is ignored.
+
+Used by handle_slot
+"""
+    rv = cmp(h, time.hour)
+    if not rv:
+        rv = cmp(m, time.minute)
+    if not rv:
+        rv = cmp(s, time.second)
+    return rv
+
+def chop(s):
+    """ Old fave, chop out trailing white space, CR, LF """
+    while s and s[-1] in ['\r','\n',' ', chr(0)]:
+        s=s[:-1]
+    return s
+
+def strip_null(s):
+    """ Getting nulls in string from DB? Clean with this method """
+    return "".join([c for c in s if ord(c)>0])
+
+def handle_slot(args):
+    """ Takes one argument, the slot name and evaluates the slot entries
+one by one, returning the first for which all conditions match. 
+
+Evaluation is done with the following globals dict:
+    - now (set to datetime.now)
+    - datetime (datetime class)
+    - datecmp (date comparison - args: year, month, day, datetime instance)
+    - timecmp (time comparison - args: hour, minute, second, datetime instance)
+    
+"""
+    name = args.strip().split(' ')[0].strip()
+    
+    _globals = {'now' : datetime.now(),
+                'datetime' : datetime,
+                'datecmp' : _datecmp,
+                'timecmp' : _timecmp,
+                }
+    
+    _locals = {}
+    slots = Slot.objects.filter(slot=name, enabled=True).order_by('rank')
+
+    for slot in slots:
+        rules = chop(slot.rules).strip()
+        if not rules:
+            # empty rule set
+            continue
+        rules = StringIO(rules)
+        for rule in rules:
+            # why are nulls coming back from DB? Who knows - but 
+            # we need to strip them for eval to work
+            rule = chop(strip_null(rule))
+            if (not rule) or rule[0] == '#' :
+                continue
+#            print("Testing: [%s]" % (rule,))
+            v = eval(rule, _globals, _locals)
+            if not v:
+                # there's a false rule in this set, can't use this slot
+                break
+        else:
+            # all rules true -this is a winner!
+            if slot.is_token:
+                return getElementWithContext(CMSToken, cid = slot.component).value
+            else:
+                return renderComponent(component_cid = slot.component)
+    else:
+        # loop fell through without finding a winning slot entry
+        # return blank
+        return ""
+
 register('componentByName', handle_componentByName)
 register('componentById', handle_componentById)
 register('tokenByName', handle_tokenByName)
 register('tokenById', handle_tokenById)
+register('slot', handle_slot)

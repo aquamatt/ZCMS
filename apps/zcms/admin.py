@@ -29,5 +29,9 @@ admin.site.register(Channel, ChannelAdmin)
 class LanguageAdmin(admin.ModelAdmin):
     list_display = ('iso_code', 'name', 'fallback')
     ordering = ('iso_code',)
-
 admin.site.register(Language, LanguageAdmin)
+
+class SlotAdmin(admin.ModelAdmin):
+    list_display = ('slot', 'rank', 'component', 'summary', 'enabled')
+    ordering = ('slot', 'rank')
+admin.site.register(Slot, SlotAdmin)
