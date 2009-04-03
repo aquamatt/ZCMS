@@ -108,6 +108,8 @@ def handle_tokenById(args):
     token = getElementWithContext(CMSToken, pk = id)
     return token.value
 
+################ CONTENT SLOTTING ##########################
+
 from datetime import datetime
 def _datecmp(year, month, day, date):
     """ Return comparison with datetime instance supplied in date. 
@@ -166,7 +168,7 @@ See models.Slot for details.
                 }
     
     _locals = {}
-    slots = Slot.objects.filter(slot=name, enabled=True).order_by('rank')
+    slots = Slot.objects.get(slot=name).slotcontent_set.filter(enabled=True).order_by('rank')
 
     for slot in slots:
         rules = chop(slot.rules).strip()

@@ -31,7 +31,10 @@ class LanguageAdmin(admin.ModelAdmin):
     ordering = ('iso_code',)
 admin.site.register(Language, LanguageAdmin)
 
+class SlotContentInline(admin.TabularInline):
+    model = SlotContent
+
 class SlotAdmin(admin.ModelAdmin):
-    list_display = ('slot', 'rank', 'component', 'summary', 'enabled')
-    ordering = ('slot', 'rank')
+    list_display = ('slot', 'summary')
+    inlines = [SlotContentInline,]
 admin.site.register(Slot, SlotAdmin)
