@@ -28,28 +28,42 @@ class CMSComponent(models.Model):
 or big text whereas a Token is a small 'thing' - a small piece of text for example, no
 more than 200 characters long."""
     cid = models.CharField(max_length = 100)
-    channel = models.ForeignKey(Channel)
-    value = models.TextField()
+    # to loose after refactor
+    #channel = models.ForeignKey(Channel)
+    #value = models.TextField()
     
     def __unicode__(self):
         return self.cid
     
     def __str__(self):
         return self.__unicode__()
+        
+class CMSComponentValue(models.Model):
+    component = models.ForeignKey(CMSComponent)
+    channel = models.ForeignKey(Channel)
+    value = models.TextField()
     
-    def shortValue(self):
-        """ For representation in admin """
-        MAX_CHARS = 100
-        sv = self.value[:MAX_CHARS]
-        if len(self.value) > MAX_CHARS:
-            sv+='...'
-        return sv
+    def __unicode__(self):
+        return "%s/%s" % (self.component.cid, self.channel)
+    
+    def __str__(self):
+        return self.__unicode__()
        
 class CMSToken(models.Model):
     """ Represents a token in the CMS. A component is a large 'thing', e.g. a template
-whereas a Token is a small 'thing' - a small piece of text for example, no 
-more than 200 characters long. """
+whereas a Token is a small 'thing' - a small piece of text for example.
+"""
     cid = models.CharField(max_length = 100)
+
+    def __unicode__(self):
+        return self.cid
+    
+    def __str__(self):
+        return self.__unicode__()
+
+class CMSTokenValue(models.Model):
+    """ The value of a token in a given language. """
+    token = models.ForeignKey(CMSToken)
     language = models.ForeignKey(Language)
     value = models.TextField()
     

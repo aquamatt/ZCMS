@@ -14,6 +14,38 @@ PROCESSORS = {}
 # need to split out args subsequently
 commandMatcher = re.compile('(\[% *(\w+) +([\w ]*) *%\])')
 
+def _getComponentWithContext(**kwargs):
+    context = threading.currentThread()._zcms_context
+
+    component = CMSComponent.objects.get(**kwargs)
+    while True:
+        try:
+            element = component.cmscomponentvalue_set.get(channel = context.channel)
+            break
+        except Exception, ex:
+            p = context.parentByChannel()
+            if not p:
+                raise CMSError("Component not available for specified context. ")
+            else:
+                context = p
+    return element
+
+def _getTokenWithContext(**kwargs):
+    context = threading.currentThread()._zcms_context
+
+    token = CMSToken.objects.get(**kwargs)
+    while True:
+        try:
+            element = token.cmstokenvalue_set.get(language = context.language)
+            break
+        except Exception, ex:
+            p = context.parentByLanguage()
+            if not p:
+                raise CMSError("Component not available for specified context. ")
+            else:
+                context = p
+    return element
+
 def getElementWithContext(cls, **kwargs):
     """ Return a component or token,
 first looking in the context specified, then looking to parent contexts if the element
@@ -23,28 +55,11 @@ If the cls is a CMSComponent, the parent will be sought by looking up the channe
 if a CMSToken it will look for fallback languages. This enforces the concept that
 components are structural whilst Tokens are purely linguistic."""
     if cls == CMSComponent:
-        parentField = 'channel'
-        parentMethod = 'parentByChannel'
+        return _getComponentWithContext(**kwargs)
     elif cls == CMSToken:
-        parentField = 'language'
-        parentMethod = 'parentByLanguage'
+        return _getTokenWithContext(**kwargs)
     else:
         raise Exception("Can only operate on CMSToken or CMSComponent")
-        
-    context = threading.currentThread()._zcms_context
-
-    while True:
-        try:
-            kwargs[parentField] = getattr(context, parentField)
-            element = cls.objects.get(**kwargs)
-            break
-        except Exception, ex:
-            p = getattr(context, parentMethod)()
-            if not p:
-                raise CMSError("Component not available for specified context. ")
-            else:
-                context = p
-    return element
         
 def renderComponent(component_cid = None, component_id = None):
     """ Render component specified by either CID or ID for the request's CMS Context. """

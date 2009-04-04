@@ -1,18 +1,18 @@
 from django.contrib import admin
 from zcms.models import *
 
+class ComponentInline(admin.TabularInline):
+    model = CMSComponentValue
+    
 class CMSComponentAdmin(admin.ModelAdmin):
-    list_display = ('cid', 'channel', 'shortValue')
-    list_filter = ('channel', )
-    search_fields = ('cid', 'value')
-    ordering = ('cid','channel')
+    inlines = [ComponentInline,]
 admin.site.register(CMSComponent, CMSComponentAdmin)
 
+class TokenInline(admin.TabularInline):
+    model = CMSTokenValue
+
 class CMSTokenAdmin(admin.ModelAdmin):
-    list_display = ('cid', 'language', 'value')
-    list_filter = ('language', )
-    search_fields = ('cid', 'value')
-    ordering = ('cid','language')
+    inlines = [TokenInline,]
 admin.site.register(CMSToken, CMSTokenAdmin)
 
 class URLAdmin(admin.ModelAdmin):
