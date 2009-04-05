@@ -28,9 +28,6 @@ class CMSComponent(models.Model):
 or big text whereas a Token is a small 'thing' - a small piece of text for example, no
 more than 200 characters long."""
     cid = models.CharField(max_length = 100)
-    # to loose after refactor
-    #channel = models.ForeignKey(Channel)
-    #value = models.TextField()
     
     def __unicode__(self):
         return self.cid
