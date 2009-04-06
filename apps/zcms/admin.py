@@ -3,6 +3,7 @@ from zcms.models import *
 
 class ComponentInline(admin.TabularInline):
     model = CMSComponentValue
+    extra = 1
     
 class CMSComponentAdmin(admin.ModelAdmin):
     inlines = [ComponentInline,]
@@ -10,6 +11,7 @@ admin.site.register(CMSComponent, CMSComponentAdmin)
 
 class TokenInline(admin.TabularInline):
     model = CMSTokenValue
+    extra = 1
 
 class CMSTokenAdmin(admin.ModelAdmin):
     inlines = [TokenInline,]
@@ -37,4 +39,5 @@ class SlotContentInline(admin.TabularInline):
 class SlotAdmin(admin.ModelAdmin):
     list_display = ('slot', 'summary')
     inlines = [SlotContentInline,]
+    extra = 1
 admin.site.register(Slot, SlotAdmin)
