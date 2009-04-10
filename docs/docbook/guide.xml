@@ -39,12 +39,12 @@
         <title>Concepts</title>
         <para>
             zCMS is a multi-<firstterm>channel</firstterm> and <firstterm>internationalised</firstterm> content management system.
-            A channel in ecommerce could be a separate site: one might have a select store and a discount store. Alternatively one might 
+            A channel in e-commerce could be a separate site: one might have a select store and a discount store. Alternatively one might 
             present a slightly different site to users coming from an affiliate as opposed users coming from any other source. A channel is 
             a variant of the site: a version styled for mobile devices could be considered a channel.
         </para>
         <para>
-            Channels may exist in a heirarchy. For example, the AOL-partner channel (AOLPARTNER) may be based upon, or
+            Channels may exist in a hierarchy. For example, the AOL-partner channel (AOLPARTNER) may be based upon, or
             extend, the UKBASE channel. In this way, if a request is made via the AOLPARTNER channel for content that is not
             explicitly defined, zCMS will look to the parent channel for that content, walking up the tree until either it finds the named
             content or it reaches the top, in which case an empty response is returned.
@@ -54,9 +54,9 @@
             to extend the parent and creates only the overriding templates in which the changes are manifested.
         </para>
         <para>
-            Channels (or sites) contain content and the content may be internationalised. Languages are defined to have fallbacks in
-            much the same way that channels may extend other channels. Thus if a piece of content is requested in for EN_US but is not
-            defined in that language, zCMS will look to the fallback language if defined (in this case, logicaly, EN_GB).
+            Channels (or sites) contain content and the content may be internationalised. Languages are defined to have fall-backs in
+            much the same way that channels may extend other channels. Thus if a piece of content is requested for EN_US but is not
+            defined in that language, zCMS will look to the fallback language if defined (in this case, logically, EN_GB).
         </para>
         <para>
             Content is composed of elements which may be <firstterm>components</firstterm> or 
@@ -69,13 +69,13 @@
             may itself be built of or contain other components and also tokens.
         </para>
         <para>
-            A token is generally some copy - text with no (or very little) markup. Tokens are genrally the translatable content as indicated by
+            A token is generally some copy - text with no (or very little) markup. Tokens are generally the translatable content as indicated by
             the fact that a token may be assigned many values according to language. Thus the 'welcome' token could have values 'Hello!' in
             English and 'Bonjour!' in French. 
         </para>
         <para>
-            Components assigned to channels and tokens assigned to languages, and the fallback/extension mechansim make it
-            qutie straight forward to build an internationalised site which presents itself via multiple channels for different devices
+            Components assigned to channels, tokens assigned to languages and the fallback/extension mechanism make it
+            quite straight forward to build an internationalised site which presents itself via multiple channels for different devices
             or audiences.
         </para>
         <para>
@@ -96,13 +96,13 @@
         <para>
             zCMS can deliver content for any client: one can construct templates for any language (Django, Turbo Gears, PHP Smarty,
             JSP etc...) using the zCMS tagging language. This document will however show a fair bias towards Django given
-            that (a) it is written in Django, (b) it was originaly built to solve the issue of managing Django templates outside of the
+            that (a) it is written in Django, (b) it was originally built to solve the issue of managing Django templates outside of the
             source tree and (c) there are some Django template tags written for zCMS.
         </para>
         <para>
             Extra documentation will be added on how to use zCMS with other systems. I'm sure the eager reader will find this
             very simple to do however.
-        <para>
+        </para>
         <para>
             Adding zCMS to a Django site is straight forward (the <filename>mycms</filename> example site included in
             the source distribution can be used for guidance):
@@ -140,5 +140,6 @@
                 </para>
             </listitem>
         </orderedlist>
+    </sect1>
     
 </article>
