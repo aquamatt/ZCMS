@@ -35,12 +35,110 @@
             </para>
 		</abstract>
 	</articleinfo>
-    <sect1 id='sect_outline'>
-        <title>Outline</title>
+    <sect1 id='sect_concepts'>
+        <title>Concepts</title>
         <para>
-            
+            zCMS is a multi-<firstterm>channel</firstterm> and <firstterm>internationalised</firstterm> content management system.
+            A channel in ecommerce could be a separate site: one might have a select store and a discount store. Alternatively one might 
+            present a slightly different site to users coming from an affiliate as opposed users coming from any other source. A channel is 
+            a variant of the site: a version styled for mobile devices could be considered a channel.
         </para>
-        
+        <para>
+            Channels may exist in a heirarchy. For example, the AOL-partner channel (AOLPARTNER) may be based upon, or
+            extend, the UKBASE channel. In this way, if a request is made via the AOLPARTNER channel for content that is not
+            explicitly defined, zCMS will look to the parent channel for that content, walking up the tree until either it finds the named
+            content or it reaches the top, in which case an empty response is returned.
+        </para>
+        <para>
+            Making a new channel which is only a slight variant on an existing channel is thus very simple: one defines the new channel
+            to extend the parent and creates only the overriding templates in which the changes are manifested.
+        </para>
+        <para>
+            Channels (or sites) contain content and the content may be internationalised. Languages are defined to have fallbacks in
+            much the same way that channels may extend other channels. Thus if a piece of content is requested in for EN_US but is not
+            defined in that language, zCMS will look to the fallback language if defined (in this case, logicaly, EN_GB).
+        </para>
+        <para>
+            Content is composed of elements which may be <firstterm>components</firstterm> or 
+            <firstterm>tokens</firstterm>. 
+        </para>
+        <para>
+            A component is generally structural if the template in question is markup, e.g. for
+            HTML or another XML language. Components, in principle, do not contain copy that requires translation. Component values
+            are defined as belonging to a specific channel. Most requests to the CMS will be for a particular component. A given component
+            may itself be built of or contain other components and also tokens.
+        </para>
+        <para>
+            A token is generally some copy - text with no (or very little) markup. Tokens are genrally the translatable content as indicated by
+            the fact that a token may be assigned many values according to language. Thus the 'welcome' token could have values 'Hello!' in
+            English and 'Bonjour!' in French. 
+        </para>
+        <para>
+            Components assigned to channels and tokens assigned to languages, and the fallback/extension mechansim make it
+            qutie straight forward to build an internationalised site which presents itself via multiple channels for different devices
+            or audiences.
+        </para>
+        <para>
+            Further control is provided by <firstterm>rules-based content slotting<firstterm>. A component may contain named
+            slots, the content for which is chosen according to rules. Each slot may be assigned a selection of tokens/components 
+            with the one to be displayed selected according to the evaluation of a set of trigger rules for each. Thus a slot
+            may display "Happy Christmas" if the date is December 25th and "Welcome!" on all other days. One slot, two tokens: one
+            displayed if the date is correct, the other being displayed only in the event that the first is not.
+        </para>
+        <para>
+            Rues-based content slotting is very useful for e-commerce sites in particular. As this functionality is extended the data
+            available against which to write tests will be increased.
+        </para>
     </sect1>
-		
+    
+    <sect1>
+        <title>Integrating zCMS</title>
+        <para>
+            zCMS can deliver content for any client: one can construct templates for any language (Django, Turbo Gears, PHP Smarty,
+            JSP etc...) using the zCMS tagging language. This document will however show a fair bias towards Django given
+            that (a) it is written in Django, (b) it was originaly built to solve the issue of managing Django templates outside of the
+            source tree and (c) there are some Django template tags written for zCMS.
+        </para>
+        <para>
+            Extra documentation will be added on how to use zCMS with other systems. I'm sure the eager reader will find this
+            very simple to do however.
+        <para>
+        <para>
+            Adding zCMS to a Django site is straight forward (the <filename>mycms</filename> example site included in
+            the source distribution can be used for guidance):
+        </para>
+        <orderedlist>
+            <listitem>
+                <para>
+                    Install the <filename>zcms</filename> app into your Python path - perhaps with other Django apps.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    In <filename>settings.py</filename> add <classname>zcms.middleware.ZCMSMiddleware</classname> 
+                    to MIDDLEWARE_CLASSES
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    In <filename>settings.py</filename> add <filename>zcms</filename> to INSTALLED_APPS
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Add something like the following to your <filename>urls.py</filename>: (r'^zcms/', include("zcms.urls")),
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    Create the necessary database tables with <filename>python manage.py syncdb</filename>
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    In your site's admin pages check that you have the zCMS application. 
+                </para>
+            </listitem>
+        </orderedlist>
+    
 </article>

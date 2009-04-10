@@ -20,7 +20,7 @@ To use ZCMS, make sure the app is on the python path and do the following:
 
 1) Settings
 	a) Add to MIDDLEWARE_CLASSES:   "zcms.middleware.ZCMSMiddleware"
-	b) Add to zcms to INSTALLED_APPS
+	b) Add zcms to INSTALLED_APPS
 	c) Add something like the following to your URLS:
 	   (r'^zcms/', include("zcms.urls")),
 	   
@@ -31,7 +31,5 @@ works. Once the apps folder is in the python path and you've made the MySQL data
 settings.py for credentials - adjust to suit) do a syncdb. Then source the datase in test_db
 (created with mysqldump) to bring in a very poor test site. You can see the content
 in admin and see the site in action on the root URL.
-
-Don't forget: it's a bit pants at the moment!
 
 Matthew
