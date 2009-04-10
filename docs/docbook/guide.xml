@@ -79,7 +79,7 @@
             or audiences.
         </para>
         <para>
-            Further control is provided by <firstterm>rules-based content slotting<firstterm>. A component may contain named
+            Further control is provided by <firstterm>rules-based content slotting</firstterm>. A component may contain named
             slots, the content for which is chosen according to rules. Each slot may be assigned a selection of tokens/components 
             with the one to be displayed selected according to the evaluation of a set of trigger rules for each. Thus a slot
             may display "Happy Christmas" if the date is December 25th and "Welcome!" on all other days. One slot, two tokens: one
