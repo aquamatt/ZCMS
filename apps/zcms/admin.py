@@ -35,6 +35,7 @@ admin.site.register(Language, LanguageAdmin)
 
 class SlotContentInline(admin.TabularInline):
     model = SlotContent
+    extra = 1
 
 class SlotAdmin(admin.ModelAdmin):
     list_display = ('slot', 'summary')

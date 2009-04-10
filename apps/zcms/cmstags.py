@@ -41,7 +41,7 @@ def _getTokenWithContext(**kwargs):
         except Exception, ex:
             p = context.parentByLanguage()
             if not p:
-                raise CMSError("Component not available for specified context. ")
+                raise CMSError("Token not available for specified context. ")
             else:
                 context = p
     return element

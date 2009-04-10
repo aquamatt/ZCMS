@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN"
+            "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
+            >
+
+<!--
+# Copyright (c) 2009 ZCMS Contributors
+# All Rights Reserved
+# See LICENSE for details
+-->
+
+<article>
+	<articleinfo>
+		<title>
+			The ZCMS Guide
+		</title>
+		<author>
+			<firstname>Matthew</firstname>
+			<surname>Pontefract</surname>
+		</author>
+		<releaseinfo>
+			version 1.0
+		</releaseinfo>
+		<abstract>
+			<para>
+                There are as many definitions of what a CMS is as there are people with content
+                to manage. The zCMS package is a Django application that manages templates and other
+                content in a database and which has a concept of content belonging to different channels
+                and being written for different languages. 
+			</para>
+            <para>
+                zCMS can manage content and templates for any third party system, but it has been 
+                implemented with a slight skew towards Django templates. To this end the zCMS package
+                provides some Django template tags to facilitate working with the CMS.
+            </para>
+		</abstract>
+	</articleinfo>
+    <sect1 id='sect_outline'>
+        <title>Outline</title>
+        <para>
+            
+        </para>
+        
+    </sect1>
+		
+</article>
