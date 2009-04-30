@@ -73,7 +73,7 @@ class CMSTokenValue(models.Model):
     value = models.TextField()
     
     def __unicode__(self):
-        return self.value
+        return "%s/%s" % (self.token, self.language)
     
     def __str__(self):
         return self.__unicode__()
