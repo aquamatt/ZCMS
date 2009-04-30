@@ -36,7 +36,7 @@ language and channel must be specified. """
         if not self.channel.parent:
             return None
         c = CMSContext(language_id = self.language.id, 
-                       channel_id = self.channel.parent.id)
+                       channel_id = self.channel.parent.id, site=self.site)
         return c
     
     def parentByLanguage(self):
@@ -44,7 +44,7 @@ language and channel must be specified. """
         if not self.language.fallback:
             return None
         c = CMSContext(language_id = self.language.fallback.id, 
-                       channel_id = self.channel.id)
+                       channel_id = self.channel.id, site = self.site)
         return c
         
     def __str__(self):
