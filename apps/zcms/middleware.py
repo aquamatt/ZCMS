@@ -9,6 +9,6 @@ class ZCMSMiddleware(object):
     """
         assert hasattr(request, 'session'), "The ZCMS middleware requires session middleware to be installed. Edit your MIDDLEWARE_CLASSES setting to insert 'django.contrib.sessions.middleware.SessionMiddleware'."
         if not request.session.has_key('ZCMS_CONTEXT'):
-            request.session['ZCMS_CONTEXT'] = CMSContext(language_id=1, channel_id=1)
+            request.session['ZCMS_CONTEXT'] = CMSContext(language_id=1, channel_id=1, site=0)
         threading.currentThread()._zcms_context = request.session['ZCMS_CONTEXT']        
         return None

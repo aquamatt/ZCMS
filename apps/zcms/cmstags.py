@@ -20,7 +20,7 @@ def _getComponentWithContext(**kwargs):
     component = CMSComponent.objects.get(**kwargs)
     while True:
         try:
-            element = component.cmscomponentvalue_set.get(channel = context.channel)
+            element = component.cmscomponentvalue_set.filter(channel = context.channel, site__lte = context.site).order_by('-site')[0]
             break
         except Exception, ex:
             p = context.parentByChannel()
@@ -36,7 +36,7 @@ def _getTokenWithContext(**kwargs):
     token = CMSToken.objects.get(**kwargs)
     while True:
         try:
-            element = token.cmstokenvalue_set.get(language = context.language)
+            element = token.cmstokenvalue_set.filter(language = context.language, site__lte=context.site).order_by('-site')[0]
             break
         except Exception, ex:
             p = context.parentByLanguage()

@@ -9,7 +9,7 @@ class CMSError(Exception): pass
 
 class CMSContext(object):
     """ Defines the channel/language context of an object """
-    def __init__(self, language_id=None, language_iso=None, channel_id=None, channel=None):
+    def __init__(self, language_id=None, language_iso=None, channel_id=None, channel=None, site=0):
         """ Init with either language id or name and channel id or name. Both
 language and channel must be specified. """
         _language = None
@@ -29,6 +29,7 @@ language and channel must be specified. """
         
         self.channel = _channel
         self.language = _language
+        self.site = site
         
     def parentByChannel(self):
         """ Return new context with channel set to parent, if available """

@@ -32,9 +32,10 @@ Should invalid arguments be passed this method fails silently.
     currentContext = request.session['ZCMS_CONTEXT']
     channel = request.GET.get('channel', currentContext.channel.name)
     language = request.GET.get('language', currentContext.language.iso_code)
+    site = request.GET.get('site', currentContext.site)
     redirect = request.GET.get('redirect', '/')
     try:
-        context = CMSContext(language_iso = language, channel = channel)
+        context = CMSContext(language_iso = language, channel = channel, site=site)
         setCMSContext(request, context)
     except Exception, ex:
         pass

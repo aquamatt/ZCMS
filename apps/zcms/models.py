@@ -1,5 +1,11 @@
 from django.db import models
 
+site_values = [(0, 'LIVE'),
+                        (1, 'STAGING'),
+                        (2, 'TEST'),
+                        (3, 'DEVELOPMENT'),
+                        (99, 'TO BE DELETED')]
+
 class Channel(models.Model):
     """ A channel may represent a country, a category of visitor... anything."""
     name = models.CharField(max_length = 20, unique = True)
@@ -38,6 +44,7 @@ more than 200 characters long."""
 class CMSComponentValue(models.Model):
     component = models.ForeignKey(CMSComponent)
     channel = models.ForeignKey(Channel)
+    site = models.IntegerField(choices = site_values, default = 0)
     value = models.TextField()
     
     def __unicode__(self):
@@ -62,6 +69,7 @@ class CMSTokenValue(models.Model):
     """ The value of a token in a given language. """
     token = models.ForeignKey(CMSToken)
     language = models.ForeignKey(Language)
+    site = models.IntegerField(choices = site_values, default = 0)
     value = models.TextField()
     
     def __unicode__(self):
