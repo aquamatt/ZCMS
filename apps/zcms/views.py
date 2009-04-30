@@ -42,8 +42,11 @@ Should invalid arguments be passed this method fails silently.
     return HttpResponseRedirect(redirect)
     
 def returnComponent(request, component_name):
-    """ Return a processed component. """
+    """ Return a processed component. Request can have language and channel GET 
+arguments to override the defaults."""
     setCMSContext(request)
+    # apply any context overides requested
+    setContext(request)
     try:
         response = renderComponentDirect(
                 getElementWithContext(CMSComponent, cid=component_name)
