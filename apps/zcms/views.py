@@ -41,17 +41,29 @@ Should invalid arguments be passed this method fails silently.
 
     return HttpResponseRedirect(redirect)
     
+def returnComponent(request, component_name):
+    """ Return a processed component. """
+    setCMSContext(request)
+    try:
+        response = renderComponentDirect(
+                getElementWithContext(CMSComponent, cid=component_name)
+                )
+    except Exception, ex:
+        print ex
+        response = ""
+
+    return HttpResponse( Template(response).render(RequestContext(request)) )
+    
 def showPage(request, suffix):
     """ Return a processed static page from the CMS. suffix should match the URL 
 field in the URLs table."""
     setCMSContext(request)
     try:
         urlObject = URL.objects.get(enabled = True, url = "/%s"%suffix)
-        response = renderComponentDirect(getElementWithContext(CMSComponent, 
-                                            cid=urlObject.component_name))
+        doc =  returnComponent(request, urlObject.component_name)
     except Exception, ex:
         print ex
-        response = ""
+        doc = ""
 
-    return HttpResponse( Template(response).render(RequestContext(request)) )
+    return doc
     
