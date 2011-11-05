@@ -2,3 +2,6 @@
 *.pydevproject
 *.bak
 *.pyc
+build
+dist
+zcms.egg-info
